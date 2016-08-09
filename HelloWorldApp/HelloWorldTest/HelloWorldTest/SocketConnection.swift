@@ -10,15 +10,9 @@ import Foundation
 import CocoaAsyncSocket
 
 
-class SocketConnection : GCDAsyncUdpSocketDelegate {
+class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
     // class definition goes here
      var mySocket: GCDAsyncUdpSocket!
-   
-  
-    
-    init(){
-    
-    }
     
     
     //    M-SEARCH * HTTP/1.1
@@ -27,6 +21,11 @@ class SocketConnection : GCDAsyncUdpSocketDelegate {
     //    MX: seconds to delay response
     //    ST: urn:dial-multiscreen-org:service:dial:1
     //    USER-AGENT: OS/version product/version
+    
+    override init() {
+        super.init()
+        getConnection()
+    }
     
     public func getConnection()
     {
@@ -63,17 +62,15 @@ class SocketConnection : GCDAsyncUdpSocketDelegate {
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
         
-       print(data)
+       
         var host: NSString?
         var port1: UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &port1, fromAddress: address)
         print("From \(host!)")
         
         
-        let gotdata: NSString = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        let gotdata: String = String(data: data!, encoding: NSUTF8StringEncoding)!
         print(gotdata)
-        
-        mySocket.close()
         
     }
     
