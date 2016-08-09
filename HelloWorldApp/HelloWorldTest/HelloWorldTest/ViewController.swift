@@ -8,20 +8,21 @@
 
 import UIKit
 import CocoaAsyncSocket
+import Foundation
 
-class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
+class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate{
     
     @IBOutlet weak var myLabel: UILabel!
     
     var socketConnection : SocketConnection!
-    
+
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         myLabel.text = "sup?";
         print("hello world its david");
-        
-        // Do any additional setup after loading the view, typically from a nib.
+                // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,23 +37,17 @@ class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
     @IBAction func searchButton(sender: AnyObject) {
         
         socketConnection = SocketConnection()
-        
+        socketConnection.responseDelegate = self
+
         //get ip address of device you want to connect to 
         //connect to the device and send command to the box
         
     }
     
     
-    func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
-        print("didConnectToHost")
+    func didReceiveResponse(data:String?) {
+        print("Recieved data:\(data)")
     }
-    
-    
-    func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
-        print("socketDidDisconnect")
-    }
-    
-
 
 
 }

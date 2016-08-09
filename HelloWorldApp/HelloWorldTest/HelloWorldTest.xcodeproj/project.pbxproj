@@ -11,6 +11,7 @@
 		2FAEE0FF1D59195A00B5EEE1 /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAEE0FE1D59195A00B5EEE1 /* SocketConnection.swift */; };
 		6B6EAD8A0F35337246738E2C /* Pods_HelloWorldTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E60E3DBFA20480CE241B991 /* Pods_HelloWorldTest.framework */; };
 		8F43F530C4CE4BD02C6E2166 /* Pods_HelloWorldTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B96AF7D15D7492C025A69A97 /* Pods_HelloWorldTestTests.framework */; };
+		D631EAD81D5A3BD90070413E /* ResponseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D631EAD71D5A3BD90070413E /* ResponseDelegate.swift */; };
 		D6677B091D58D92400AFC975 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6677B081D58D92400AFC975 /* AppDelegate.swift */; };
 		D6677B0B1D58D92400AFC975 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6677B0A1D58D92400AFC975 /* ViewController.swift */; };
 		D6677B0E1D58D92400AFC975 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6677B0C1D58D92400AFC975 /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 		6E60E3DBFA20480CE241B991 /* Pods_HelloWorldTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A532B0FE2541D7D0C3869E7 /* Pods-HelloWorldTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldTestUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HelloWorldTestUITests/Pods-HelloWorldTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B96AF7D15D7492C025A69A97 /* Pods_HelloWorldTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D631EAD71D5A3BD90070413E /* ResponseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseDelegate.swift; sourceTree = "<group>"; };
 		D6677B051D58D92400AFC975 /* HelloWorldTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6677B081D58D92400AFC975 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6677B0A1D58D92400AFC975 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				D6677B111D58D92400AFC975 /* LaunchScreen.storyboard */,
 				D6677B141D58D92400AFC975 /* Info.plist */,
 				2FAEE0FE1D59195A00B5EEE1 /* SocketConnection.swift */,
+				D631EAD71D5A3BD90070413E /* ResponseDelegate.swift */,
 			);
 			path = HelloWorldTest;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				D6677B0B1D58D92400AFC975 /* ViewController.swift in Sources */,
 				2FAEE0FF1D59195A00B5EEE1 /* SocketConnection.swift in Sources */,
 				D6677B091D58D92400AFC975 /* AppDelegate.swift in Sources */,
+				D631EAD81D5A3BD90070413E /* ResponseDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

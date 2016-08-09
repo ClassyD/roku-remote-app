@@ -13,7 +13,7 @@ import CocoaAsyncSocket
 class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
     // class definition goes here
      var mySocket: GCDAsyncUdpSocket!
-    
+     var responseDelegate:ResponseDelegate! //This should be implemented and referred to your ViewController
     
     //    M-SEARCH * HTTP/1.1
     //    HOST: 239.255.255.250:1900
@@ -27,7 +27,7 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
         getConnection()
     }
     
-    public func getConnection()
+    internal func getConnection()
     {
         let broadcastAddress: String = "239.255.255.250"
         let broadcastPort:UInt16 = 1900
@@ -66,11 +66,18 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
         var host: NSString?
         var port1: UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &port1, fromAddress: address)
-        print("From \(host!)")
+        //print("From \(host!)")
+        //let gotdata: String = String(data: data!, encoding: NSUTF8StringEncoding)!
+        //print(gotdata)
         
-        
-        let gotdata: String = String(data: data!, encoding: NSUTF8StringEncoding)!
-        print(gotdata)
+        let dataStr = String(data: data, encoding: NSUTF8StringEncoding)
+        //let addressStr = String(data: address, encoding: NSUTF8StringEncoding)
+        if let rangeOfLocation = dataStr!.rangeOfString("LOCATION:", options: NSStringCompareOptions.BackwardsSearch) {
+            // Found a zero, get the following text
+            let rokuIp = String(dataStr!.characters.suffixFrom(rangeOfLocation.endIndex))
+            print("received from: " +  String(rokuIp))
+            responseDelegate.didReceiveResponse(rokuIp)
+        }
         
     }
     
