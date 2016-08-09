@@ -1,0 +1,19 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '9.0'
+use_frameworks!
+
+target 'HelloWorldTest' do
+  # Pods for HelloWorldTest
+ pod 'CocoaAsyncSocket', '~> 7.5'
+
+  target 'HelloWorldTestTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'HelloWorldTestUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

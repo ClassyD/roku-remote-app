@@ -11,11 +11,11 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var myLabel: UILabel!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         myLabel.text = "sup?";
-        print("hello world");
+        print("hello world its david");
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -27,6 +27,16 @@ class ViewController: UIViewController {
     @IBAction func myButtonClick(sender: AnyObject) {
         myLabel.text = "Hello World";
     }
+    
+    @IBAction func searchButton(sender: AnyObject) {
+        
+        //Make Msearch call to find devices connected
+        
+        //get ip address of device you want to connect to 
+        //connect to the device and send command to the box
+        
+    }
+
 
 }
 
