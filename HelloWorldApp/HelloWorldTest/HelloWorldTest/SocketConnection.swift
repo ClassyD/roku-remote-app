@@ -12,6 +12,7 @@ import CocoaAsyncSocket
 
 class SocketConnection : GCDAsyncUdpSocketDelegate {
     // class definition goes here
+     var mySocket: GCDAsyncUdpSocket!
    
   
     
@@ -32,7 +33,7 @@ class SocketConnection : GCDAsyncUdpSocketDelegate {
         let broadcastAddress: String = "239.255.255.250"
         let broadcastPort:UInt16 = 1900
         var error : NSError?
-        var mySocket: GCDAsyncUdpSocket!
+       
     
         //DO something
         let mSearchString: NSData = "M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: \"ssdp:discover\"\r\nMX: 3\r\nST: roku:ecp\r\nUSER-AGENT: iOS UPnP/1.1 TestApp/1.0\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!
@@ -53,13 +54,10 @@ class SocketConnection : GCDAsyncUdpSocketDelegate {
         }
         
        
-        mySocket.closeAfterSending()
+      
 
         
     }
-    
-    
-    
     
     //Callbacks
     
@@ -74,6 +72,8 @@ class SocketConnection : GCDAsyncUdpSocketDelegate {
         
         let gotdata: NSString = NSString(data: data!, encoding: NSUTF8StringEncoding)!
         print(gotdata)
+        
+        mySocket.close()
         
     }
     
