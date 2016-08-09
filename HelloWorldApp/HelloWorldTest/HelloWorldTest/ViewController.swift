@@ -9,7 +9,7 @@
 import UIKit
 import CocoaAsyncSocket
 
-class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
+class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
     
     
     var socketConnection : SocketConnection!
@@ -24,6 +24,8 @@ class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     @IBAction func stopConnection(sender: AnyObject) {
         socketConnection.stopConnection()
         
@@ -35,11 +37,15 @@ class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
     @IBAction func searchButton(sender: AnyObject) {
         
         socketConnection = SocketConnection()
-        
+        socketConnection.responseDelegate = self
         
         //get ip address of device you want to connect to 
         //connect to the device and send command to the box
         
+    }
+    
+    func didReceiveResponse(data:String?) {
+        print("Recieved data:\(data)")
     }
     
     
