@@ -8,46 +8,51 @@
 
 import UIKit
 import CocoaAsyncSocket
-import Foundation
 
-class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate{
+class ViewController: UIViewController,GCDAsyncUdpSocketDelegate  {
     
-    @IBOutlet weak var myLabel: UILabel!
     
     var socketConnection : SocketConnection!
-
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        myLabel.text = "sup?";
-        print("hello world its david");
-                // Do any additional setup after loading the view, typically from a nib.
+        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    @IBAction func myButtonClick(sender: AnyObject) {
-        myLabel.text = "Hello World";
+    @IBAction func stopConnection(sender: AnyObject) {
+        socketConnection.stopConnection()
+        
+        let alert = UIAlertController(title: "Alert", message: "You killed the Socket!!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func searchButton(sender: AnyObject) {
         
         socketConnection = SocketConnection()
-        socketConnection.responseDelegate = self
-
+        
+        
         //get ip address of device you want to connect to 
         //connect to the device and send command to the box
         
     }
     
     
-    func didReceiveResponse(data:String?) {
-        print("Recieved data:\(data)")
+    func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
+        print("didConnectToHost")
     }
+    
+    
+    func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
+        print("socketDidDisconnect")
+    }
+    
+
 
 
 }

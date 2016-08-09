@@ -51,14 +51,23 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
         catch {
             print("I failed!!")
         }
-        
-       
-      
-
+    }
+    
+    
+    
+    public func stopConnection()
+    {
+        if (!mySocket.isClosed())
+        {
+            mySocket.close()
+        }
         
     }
     
-    //Callbacks
+    
+    
+    
+    /////////Callbacks\\\\\\\\\\\
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
         
