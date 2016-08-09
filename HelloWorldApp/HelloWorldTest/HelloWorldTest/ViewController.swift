@@ -29,9 +29,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func searchButton(sender: AnyObject) {
+        print("please work!")
+        //Mak0e Msearch call to find adevices connected
+        let socketConnection: SocketConnection = SocketConnection()
         
-        //Make Msearch call to find devices connected
-        
+        socketConnection.getConnection();
         //get ip address of device you want to connect to 
         //connect to the device and send command to the box
         

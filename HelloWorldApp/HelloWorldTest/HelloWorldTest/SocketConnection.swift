@@ -12,25 +12,79 @@ import CocoaAsyncSocket
 
 class SocketConnection : GCDAsyncUdpSocketDelegate {
     // class definition goes here
-    var broadcastAddress = "239.255.255.250"
-    var broadcastPort:UInt16 = 1900
-    var mySocket: GCDAsyncUdpSocket!
-    var mySocketRec: GCDAsyncUdpSocket!
-    var error: NSError?
-    var message: NSData
-
+   
+  
+    
     init(){
     
     }
     
-    private func getConnection()
+    
+    //    M-SEARCH * HTTP/1.1
+    //    HOST: 239.255.255.250:1900
+    //    MAN: "ssdp:discover"
+    //    MX: seconds to delay response
+    //    ST: urn:dial-multiscreen-org:service:dial:1
+    //    USER-AGENT: OS/version product/version
+    
+    public func getConnection()
     {
+        let broadcastAddress: String = "239.255.255.250"
+        let broadcastPort:UInt16 = 1900
+        var error : NSError?
+        var mySocket: GCDAsyncUdpSocket!
+    
         //DO something
+        let mSearchString: NSData = "M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: \"ssdp:discover\"\r\nMX: 3\r\nST: roku:ecp\r\nUSER-AGENT: iOS UPnP/1.1 TestApp/1.0\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!
+        
         mySocket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue());
-        message = NSData(base64EncodedString: <#T##String#>, options: <#T##NSDataBase64DecodingOptions#>)
-        mySocket.sendData(<#T##data: NSData##NSData#>, toHost: <#T##String#>, port: <#T##UInt16#>, withTimeout: <#T##NSTimeInterval#>, tag: <#T##Int#>)
+        
+       
+        mySocket.sendData(mSearchString, toHost: broadcastAddress, port: broadcastPort, withTimeout: 3, tag: 0)
+        
+        
+        do{
+            try mySocket.bindToPort(broadcastPort)
+            try mySocket.joinMulticastGroup(broadcastAddress)
+            try mySocket.beginReceiving()
+        }
+        catch {
+            print("I failed!!")
+        }
+        
+       
+        mySocket.closeAfterSending()
+
         
     }
     
+    
+    
+    
+    //Callbacks
+    
+    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+        
+       print(data)
+        var host: NSString?
+        var port1: UInt16 = 0
+        GCDAsyncUdpSocket.getHost(&host, port: &port1, fromAddress: address)
+        print("From \(host!)")
+        
+        
+        let gotdata: NSString = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+        print(gotdata)
+        
+    }
+    
+    func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
+        print("didConnectToHost")
+    }
+   
+    
+    func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
+        print("socketDidDisconnect")
+    }
+
     
 }
