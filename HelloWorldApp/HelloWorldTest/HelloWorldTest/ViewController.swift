@@ -11,7 +11,7 @@ import CocoaAsyncSocket
 import AEXML
 
 
-class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
+class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
     
     
     @IBOutlet weak var rokuDeviceName: UILabel!
@@ -30,8 +30,9 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.hiddenTextfield.delegate = self
+        self.hiddenTextfield.delegate = self
         self.hiddenTextfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+      
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
     }
@@ -56,11 +57,21 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let  char = string.cStringUsingEncoding(NSUTF8StringEncoding)!
+        let isBackSpace = strcmp(char, "\\b")
+        if (isBackSpace == -92) {
+            print("Backspace was pressed")
+        }
+        return true
+    }
+    
     
     func textFieldDidChange(textField: UITextField) {
         print(textField.text!.characters.last)
         let char = textField.text!.characters.last
-        httpManager.callKeyboardCharEndPoint(String(char!))
+        
+        //httpManager.callKeyboardCharEndPoint(String(char!))
     }
     
 //    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
