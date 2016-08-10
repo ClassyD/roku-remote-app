@@ -18,14 +18,15 @@ public class HttpManager
 
     
     init(urls: String){
-        print(baseURL)
         self.baseURL = urls
+        print(baseURL)
     }
     
     public func callGetInfoEndPoint()
     {
-        var url = baseURL + getInfoEndpoint
-        let request = NSMutableURLRequest(URL: NSURL(string:url)!)
+        var url = self.baseURL + self.getInfoEndpoint
+        print(url);
+        var request = NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
         request.HTTPMethod = "GET"

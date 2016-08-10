@@ -29,7 +29,7 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     @IBAction func stopConnection(sender: AnyObject) {
         socketConnection.stopConnection()
         
-        let alert = UIAlertController(title: "Alert", message: "You killed the Socket!!", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Alert", message: "You killed the Socket!!", preferredStyle:UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -38,7 +38,6 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         
         socketConnection = SocketConnection()
         socketConnection.responseDelegate = self
-        
         //get ip address of device you want to connect to 
         //connect to the device and send command to the box
         
@@ -48,7 +47,6 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         print("Recieved data:\(data)")
         httpManager = HttpManager(urls: data)
         httpManager.callGetInfoEndPoint()
-       
         
     }
     

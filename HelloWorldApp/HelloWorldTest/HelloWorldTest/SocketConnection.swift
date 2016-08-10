@@ -84,11 +84,28 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
         if let rangeOfLocation = dataStr!.rangeOfString("LOCATION:", options: NSStringCompareOptions.BackwardsSearch) {
             // Found a zero, get the following text
             let rokuIp = String(dataStr!.characters.suffixFrom(rangeOfLocation.endIndex))
-            print("received from: " +  String(rokuIp))
-            responseDelegate.didReceiveResponse(rokuIp)
+            let validIpAddressRegex = "http://(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}:([0-9]{4}/)"
+            var cleanIp = matchesForRegexInText(validIpAddressRegex, text: rokuIp).first
+            print("received from: " +  cleanIp!)
+            responseDelegate.didReceiveResponse(cleanIp!)
         }
         
     }
+    
+    func matchesForRegexInText(regex: String, text: String) -> [String] {
+        
+        do {
+            let regex = try NSRegularExpression(pattern: regex, options: [])
+            let nsString = text as NSString
+            let results = regex.matchesInString(text,
+                                                options: [], range: NSMakeRange(0, nsString.length))
+            return results.map { nsString.substringWithRange($0.range)}
+        } catch let error as NSError {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+
     
     func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
         print("didConnectToHost")
