@@ -8,17 +8,19 @@
 
 import UIKit
 import CocoaAsyncSocket
+import AEXML
 
 class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
     
     
+    @IBOutlet weak var rokuDeviceName: UILabel!
     var socketConnection : SocketConnection!
     var httpManager: HttpManager!
-    
+    var xmlParser: NSXMLParser!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
+        
+        }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -27,6 +29,7 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     
     
     @IBAction func stopConnection(sender: AnyObject) {
+       
         socketConnection.stopConnection()
         
         let alert = UIAlertController(title: "Alert", message: "You killed the Socket!!", preferredStyle:UIAlertControllerStyle.Alert)
@@ -45,41 +48,48 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     
     func didReceiveResponse(data:String) {
         print("Recieved data:\(data)")
-        
-        let trimmedString = data.stringByTrimmingCharactersInSet(
-            NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        )
-
-        httpManager = HttpManager(urls: trimmedString)
+        rokuDeviceName.text = "Connected to: " + data
+        socketConnection.stopConnection()
+        httpManager = HttpManager(urls: data)
+        httpManager.responseDelegate = self
         httpManager.callGetInfoEndPoint()
         
     }
     
+    func didReceiveXMLInfo(data: NSData){
+        let xmlDoc = try! AEXMLDocument(xmlData: data)
+        print("data:    " + xmlDoc.xmlString)
+        print(xmlDoc.root["user-device-name"].value)
+        rokuDeviceName.text = rokuDeviceName.text! + "\n Device name: " + xmlDoc.root["user-device-name"].value!
+    }
+    
+    
     @IBAction func upButton(sender: AnyObject) {
         if (httpManager != nil)
         {
-         httpManager.callKeyUpPoint()
+            httpManager.sendRequest("UP")
         }
     }
     
     @IBAction func downButton(sender: AnyObject) {
         if (httpManager != nil)
         {
-            httpManager.callKeyDownEndPoint()
+            httpManager.sendRequest("DOWN")
         }
-
-    }
-    func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
-        print("didConnectToHost")
     }
     
-    
-    func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
-        print("socketDidDisconnect")
+    @IBAction func leftButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+            httpManager.sendRequest("LEFT")
+        }
     }
     
-
-
-
+    @IBAction func rightButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+            httpManager.sendRequest("RIGHT")
+        }
+    }
 }
 

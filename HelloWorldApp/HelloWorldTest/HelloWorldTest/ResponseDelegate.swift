@@ -10,4 +10,5 @@ import Foundation
 
 protocol ResponseDelegate  {
     func didReceiveResponse(data:String)
+    func didReceiveXMLInfo(data: NSData)
 }

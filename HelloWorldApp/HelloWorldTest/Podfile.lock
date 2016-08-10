@@ -1,14 +1,17 @@
 PODS:
+  - AEXML (3.0.0)
   - CocoaAsyncSocket (7.5.0):
     - CocoaAsyncSocket/GCD (= 7.5.0)
   - CocoaAsyncSocket/GCD (7.5.0)
 
 DEPENDENCIES:
+  - AEXML
   - CocoaAsyncSocket (~> 7.5)
 
 SPEC CHECKSUMS:
+  AEXML: 716fb0a8decba4a3517324a71fee3685b30233d2
   CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
 
-PODFILE CHECKSUM: 54068d6263a1268f062fc6ac012ebbcee23ac380
+PODFILE CHECKSUM: b12ca97791b0d59c894fb1c8b36888d3abe35b53
 
 COCOAPODS: 1.0.1

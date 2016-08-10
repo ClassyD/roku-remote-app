@@ -57,7 +57,7 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
     
     public func stopConnection()
     {
-        if (!mySocket.isClosed())
+        if (mySocket != nil || !mySocket.isClosed())
         {
             mySocket.close()
         }

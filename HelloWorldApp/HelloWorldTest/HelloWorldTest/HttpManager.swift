@@ -14,7 +14,9 @@ public class HttpManager
     var getInfoEndpoint : String  = "query/device-info"
     var getKeyDownEndPoint : String =  "keypress/Down"
     var getKeyUpEndPoint : String = "keypress/Up"
-   
+    var getKeyLeftEndPoint : String = "keypress/Left"
+    var getKeyRightEndPoint : String = "keypress/Right"
+    var responseDelegate:ResponseDelegate!
 
     
     init(urls: String){
@@ -34,12 +36,14 @@ public class HttpManager
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
             print("Response: \(response)")
             let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            print(strData)
+            print(String(strData))
+            self.responseDelegate.didReceiveXMLInfo((strData?.dataUsingEncoding(NSUTF8StringEncoding))!)
         })
-        
         
         task.resume()
     }
+    
+    
     
     public func callKeyDownEndPoint()
     {
@@ -58,14 +62,29 @@ public class HttpManager
         
     }
     
-    public func callKeyUpPoint()
+    public func sendRequest(operation: String){
+        switch operation {
+            case "UP":
+                callEndPoint(getKeyUpEndPoint, requesType: "POST")
+            case "DOWN":
+                callEndPoint(getKeyDownEndPoint, requesType: "POST")
+            case "LEFT":
+                callEndPoint(getKeyLeftEndPoint, requesType: "POST")
+            case "RIGHT":
+                callEndPoint(getKeyRightEndPoint, requesType: "POST")
+            default:
+                break
+        }
+    }
+    
+    public func callEndPoint(endPoint: String, requesType: String)
     {
         
-        var url = baseURL + getKeyUpEndPoint
+        var url = baseURL + endPoint
         let request = NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
-        request.HTTPMethod = "POST"
+        request.HTTPMethod = requesType
         let _: NSError?
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
             print("Response: \(response)")
