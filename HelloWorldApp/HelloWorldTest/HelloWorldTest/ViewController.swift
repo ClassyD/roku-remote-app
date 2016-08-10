@@ -10,18 +10,38 @@ import UIKit
 import CocoaAsyncSocket
 import AEXML
 
-class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
+
+class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDelegate, ResponseDelegate  {
     
     
     @IBOutlet weak var rokuDeviceName: UILabel!
     var socketConnection : SocketConnection!
     var httpManager: HttpManager!
     var xmlParser: NSXMLParser!
+    @IBOutlet weak var hiddenTextfield: UITextField!
+    var keys = [UIKeyCommand]()
+    
+    // MARK: UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        }
-
+        self.hiddenTextfield.delegate = self
+        self.hiddenTextfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+      
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -36,6 +56,30 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let  char = string.cStringUsingEncoding(NSUTF8StringEncoding)!
+        let isBackSpace = strcmp(char, "\\b")
+        if (isBackSpace == -92) {
+            print("Backspace was pressed")
+        }
+        return true
+    }
+    
+    
+    func textFieldDidChange(textField: UITextField) {
+        print(textField.text!.characters.last)
+        let char = textField.text!.characters.last
+        
+        //httpManager.callKeyboardCharEndPoint(String(char!))
+    }
+    
+//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//       
+//        print(textField.text!.characters.last)
+//        
+//        return true
+//    }
     
     @IBAction func searchButton(sender: AnyObject) {
         
@@ -60,9 +104,29 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         let xmlDoc = try! AEXMLDocument(xmlData: data)
         print("data:    " + xmlDoc.xmlString)
         print(xmlDoc.root["user-device-name"].value)
-        rokuDeviceName.text = rokuDeviceName.text! + "\n Device name: " + xmlDoc.root["user-device-name"].value!
+        let deviceStr = "Device name: " + xmlDoc.root["user-device-name"].value!
+        dispatch_async(dispatch_get_main_queue(), {
+            self.rokuDeviceName.text = deviceStr
+        })
     }
     
+    @IBAction func keyboardButton(sender: AnyObject) {
+        hiddenTextfield.becomeFirstResponder()
+    }
+    
+    @IBAction func okButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+            httpManager.sendRequest("OK")
+        }
+    }
+    
+    @IBAction func backButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+            httpManager.sendRequest("BACK")
+        }
+    }
     
     @IBAction func upButton(sender: AnyObject) {
         if (httpManager != nil)

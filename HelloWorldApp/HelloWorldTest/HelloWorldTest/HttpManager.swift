@@ -16,9 +16,10 @@ public class HttpManager
     var getKeyUpEndPoint : String = "keypress/Up"
     var getKeyLeftEndPoint : String = "keypress/Left"
     var getKeyRightEndPoint : String = "keypress/Right"
+    var getKeyOkEndPoint : String = "keypress/Select"
+    var getKeyBackEndPoint : String = "keypress/Back"
     var responseDelegate:ResponseDelegate!
 
-    
     init(urls: String){
         self.baseURL = urls
         print(baseURL)
@@ -72,6 +73,10 @@ public class HttpManager
                 callEndPoint(getKeyLeftEndPoint, requesType: "POST")
             case "RIGHT":
                 callEndPoint(getKeyRightEndPoint, requesType: "POST")
+            case "OK":
+            callEndPoint(getKeyOkEndPoint, requesType: "POST")
+            case "BACK":
+            callEndPoint(getKeyBackEndPoint, requesType: "POST")
             default:
                 break
         }
@@ -95,7 +100,24 @@ public class HttpManager
     }
 
     
-    
+    public func callKeyboardCharEndPoint(char: String?)
+    {
+        
+        var url = baseURL + "keypress/Lit_" + (char)!
+        print(url)
+        let request = NSMutableURLRequest(URL: NSURL(string:url)!)
+        let session = NSURLSession.sharedSession()
+        
+        request.HTTPMethod = "POST"
+        let _: NSError?
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+        })
+        task.resume()
+        
+    }
+
     
     
 }
