@@ -13,7 +13,7 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     
     
     var socketConnection : SocketConnection!
-    
+    var httpManager: HttpManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +44,12 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
         
     }
     
-    func didReceiveResponse(data:String?) {
+    func didReceiveResponse(data:String) {
         print("Recieved data:\(data)")
+        httpManager = HttpManager(urls: data)
+        httpManager.callGetInfoEndPoint()
+       
+        
     }
     
     

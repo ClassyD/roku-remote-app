@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ResponseDelegate {
-    func didReceiveResponse(data:String?)
+protocol ResponseDelegate  {
+    func didReceiveResponse(data:String)
 }
