@@ -34,7 +34,10 @@ public class HttpManager
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
             print("Response: \(response)")
             let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print(strData)
         })
+        
+        
         task.resume()
     }
     

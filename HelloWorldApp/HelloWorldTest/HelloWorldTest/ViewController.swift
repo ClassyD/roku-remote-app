@@ -45,12 +45,30 @@ class ViewController: UIViewController, GCDAsyncUdpSocketDelegate, ResponseDeleg
     
     func didReceiveResponse(data:String) {
         print("Recieved data:\(data)")
-        httpManager = HttpManager(urls: data)
+        
+        let trimmedString = data.stringByTrimmingCharactersInSet(
+            NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        )
+
+        httpManager = HttpManager(urls: trimmedString)
         httpManager.callGetInfoEndPoint()
         
     }
     
+    @IBAction func upButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+         httpManager.callKeyUpPoint()
+        }
+    }
     
+    @IBAction func downButton(sender: AnyObject) {
+        if (httpManager != nil)
+        {
+            httpManager.callKeyDownEndPoint()
+        }
+
+    }
     func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
         print("didConnectToHost")
     }
