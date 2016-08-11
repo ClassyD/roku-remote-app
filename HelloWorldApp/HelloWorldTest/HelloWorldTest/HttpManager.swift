@@ -18,8 +18,9 @@ public class HttpManager
     var getKeyRightEndPoint : String = "keypress/Right"
     var getKeyOkEndPoint : String = "keypress/Select"
     var getKeyBackEndPoint : String = "keypress/Back"
+    var getKeyBackspaceEndPoint : String = "keypress/Backspace"
     var responseDelegate:ResponseDelegate!
-
+    
     init(urls: String){
         self.baseURL = urls
         print(baseURL)
@@ -63,26 +64,28 @@ public class HttpManager
         
     }
     
-    public func sendRequest(operation: String){
+    public func sendRequest(operation: String) {
         switch operation {
-            case "UP":
-                callEndPoint(getKeyUpEndPoint, requesType: "POST")
-            case "DOWN":
-                callEndPoint(getKeyDownEndPoint, requesType: "POST")
-            case "LEFT":
-                callEndPoint(getKeyLeftEndPoint, requesType: "POST")
-            case "RIGHT":
-                callEndPoint(getKeyRightEndPoint, requesType: "POST")
-            case "OK":
-            callEndPoint(getKeyOkEndPoint, requesType: "POST")
-            case "BACK":
-            callEndPoint(getKeyBackEndPoint, requesType: "POST")
-            default:
-                break
+        case "UP":
+            try! callEndPoint(getKeyUpEndPoint, requesType: "POST")
+        case "DOWN":
+            try! callEndPoint(getKeyDownEndPoint, requesType: "POST")
+        case "LEFT":
+            try! callEndPoint(getKeyLeftEndPoint, requesType: "POST")
+        case "RIGHT":
+            try! callEndPoint(getKeyRightEndPoint, requesType: "POST")
+        case "OK":
+            try! callEndPoint(getKeyOkEndPoint, requesType: "POST")
+        case "BACK":
+            try! callEndPoint(getKeyBackEndPoint, requesType: "POST")
+        case "BACKSPACE":
+            try! callEndPoint(getKeyBackspaceEndPoint, requesType: "POST")
+        default:
+            break
         }
     }
     
-    public func callEndPoint(endPoint: String, requesType: String)
+    internal func callEndPoint(endPoint: String, requesType: String) throws
     {
         
         var url = baseURL + endPoint
@@ -96,9 +99,9 @@ public class HttpManager
             let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
         })
         task.resume()
-
+        
     }
-
+    
     
     public func callKeyboardCharEndPoint(char: String?)
     {
@@ -117,7 +120,7 @@ public class HttpManager
         task.resume()
         
     }
-
+    
     
     
 }
