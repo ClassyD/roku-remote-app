@@ -18,8 +18,9 @@ public class HttpManager
     var getKeyRightEndPoint : String = "keypress/Right"
     var getKeyOkEndPoint : String = "keypress/Select"
     var getKeyBackEndPoint : String = "keypress/Back"
+    var getKeyBackspaceEndPoint : String = "keypress/Backspace"
     var responseDelegate:ResponseDelegate!
-
+    
     init(urls: String){
         self.baseURL = urls
         print(baseURL)
@@ -63,61 +64,65 @@ public class HttpManager
         
     }
     
-    public func sendRequest(operation: String){
+    public func sendRequest(operation: String) {
         switch operation {
-            case "UP":
-                callEndPoint(getKeyUpEndPoint, requesType: "POST")
-            case "DOWN":
-                callEndPoint(getKeyDownEndPoint, requesType: "POST")
-            case "LEFT":
-                callEndPoint(getKeyLeftEndPoint, requesType: "POST")
-            case "RIGHT":
-                callEndPoint(getKeyRightEndPoint, requesType: "POST")
-            case "OK":
+        case "UP":
+            callEndPoint(getKeyUpEndPoint, requesType: "POST")
+        case "DOWN":
+            callEndPoint(getKeyDownEndPoint, requesType: "POST")
+        case "LEFT":
+            callEndPoint(getKeyLeftEndPoint, requesType: "POST")
+        case "RIGHT":
+            callEndPoint(getKeyRightEndPoint, requesType: "POST")
+        case "OK":
             callEndPoint(getKeyOkEndPoint, requesType: "POST")
-            case "BACK":
+        case "BACK":
             callEndPoint(getKeyBackEndPoint, requesType: "POST")
-            default:
-                break
+        case "BACKSPACE":
+            callEndPoint(getKeyBackspaceEndPoint, requesType: "POST")
+        default:
+            break
         }
     }
     
-    public func callEndPoint(endPoint: String, requesType: String)
+    internal func callEndPoint(endPoint: String, requesType: String)
     {
         
         var url = baseURL + endPoint
+        print(url)
         let request = NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
         request.HTTPMethod = requesType
         let _: NSError?
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
+        let task = session.dataTaskWithRequest(request, completionHandler: { data, response, err -> Void in
             print("Response: \(response)")
-            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            //let strData = NSString(data: data!, encoding: NSUTF8StringEncoding) 
         })
         task.resume()
-
+        
     }
-
     
-    public func callKeyboardCharEndPoint(char: String?)
+    
+    public func callKeyboardCharEndPoint(char: String?
+        )
     {
         
         var url = baseURL + "keypress/Lit_" + (char)!
         print(url)
-        let request = NSMutableURLRequest(URL: NSURL(string:url)!)
+        let request = try! NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
         request.HTTPMethod = "POST"
         let _: NSError?
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
             print("Response: \(response)")
-            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            //let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
         })
         task.resume()
         
     }
-
+    
     
     
 }

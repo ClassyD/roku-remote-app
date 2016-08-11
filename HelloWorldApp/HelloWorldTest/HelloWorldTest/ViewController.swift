@@ -19,7 +19,6 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
     var httpManager: HttpManager!
     var xmlParser: NSXMLParser!
     @IBOutlet weak var hiddenTextfield: UITextField!
-    var keys = [UIKeyCommand]()
     
     // MARK: UITextFieldDelegate
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -32,7 +31,7 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
         super.viewDidLoad()
         self.hiddenTextfield.delegate = self
         self.hiddenTextfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-      
+        
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
     }
@@ -41,7 +40,7 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
         view.endEditing(true)
     }
     
-   
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,7 +48,7 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
     
     
     @IBAction func stopConnection(sender: AnyObject) {
-       
+        
         socketConnection.stopConnection()
         
         let alert = UIAlertController(title: "Alert", message: "You killed the Socket!!", preferredStyle:UIAlertControllerStyle.Alert)
@@ -58,34 +57,39 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let  char = string.cStringUsingEncoding(NSUTF8StringEncoding)!
-        let isBackSpace = strcmp(char, "\\b")
-        if (isBackSpace == -92) {
-            print("Backspace was pressed")
-        }
-        return true
+            do {
+                let charStr  = string
+                let  char = string.cStringUsingEncoding(NSUTF8StringEncoding)!
+                let isBackSpace = strcmp(char, "\\b")
+                if (isBackSpace == -92) {
+                     httpManager.sendRequest("BACKSPACE")
+                     print("Backspace was pressed")
+                } else if (charStr == " ") {
+                    print("Space was pressed")
+                    httpManager.callKeyboardCharEndPoint(charStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()))
+                } else{
+                    print(string)
+                    httpManager.callKeyboardCharEndPoint(charStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()))
+                }
+                return true
+            } catch {
+                return false
+            }
+            
     }
     
     
     func textFieldDidChange(textField: UITextField) {
         print(textField.text!.characters.last)
-        let char = textField.text!.characters.last
-        
+            
         //httpManager.callKeyboardCharEndPoint(String(char!))
     }
-    
-//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-//       
-//        print(textField.text!.characters.last)
-//        
-//        return true
-//    }
     
     @IBAction func searchButton(sender: AnyObject) {
         
         socketConnection = SocketConnection()
         socketConnection.responseDelegate = self
-        //get ip address of device you want to connect to 
+        //get ip address of device you want to connect to
         //connect to the device and send command to the box
         
     }
