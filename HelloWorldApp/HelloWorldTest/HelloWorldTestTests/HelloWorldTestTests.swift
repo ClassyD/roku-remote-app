@@ -11,9 +11,12 @@ import XCTest
 
 class HelloWorldTestTests: XCTestCase {
     
+   
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+       
+        
     }
     
     override func tearDown() {
@@ -25,6 +28,22 @@ class HelloWorldTestTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+    
+    func testmatchesForRegexInTextFunction() {
+        //Set up
+         let socketConnection: SocketConnection = SocketConnection()
+         let regex: String = "http://(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}:([0-9]{4}/)"
+         let invalidString = "http://192.168.2.4:8060/s`dvaknsf dv `adf s`f bl/adf"
+         let expectedResult = "http://192.168.2.4:8060/"
+        
+        //test
+         let actualResult = socketConnection.matchesForRegexInText(regex, text: invalidString)
+        
+        //Assert
+        XCTAssertEqual(actualResult.first, expectedResult)
+        
+    }
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
