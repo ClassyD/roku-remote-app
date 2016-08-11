@@ -30,7 +30,7 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hiddenTextfield.delegate = self
-        // self.hiddenTextfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        self.hiddenTextfield.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
@@ -56,17 +56,20 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) ->
-        Bool {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
             do {
+                let charStr  = string
                 let  char = string.cStringUsingEncoding(NSUTF8StringEncoding)!
                 let isBackSpace = strcmp(char, "\\b")
                 if (isBackSpace == -92) {
-                    //try! httpManager.callEndPoint("BACKSPACE", requesType: "POST")
-                    print("Backspace was pressed")
-                }else{
+                     httpManager.sendRequest("BACKSPACE")
+                     print("Backspace was pressed")
+                } else if (charStr == " ") {
+                    print("Space was pressed")
+                    httpManager.callKeyboardCharEndPoint(charStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()))
+                } else{
                     print(string)
-                    //try! httpManager.callKeyboardCharEndPoint(String(char))
+                    httpManager.callKeyboardCharEndPoint(charStr)
                 }
                 return true
             } catch {
@@ -78,17 +81,9 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
     
     func textFieldDidChange(textField: UITextField) {
         print(textField.text!.characters.last)
-        let char = textField.text!.characters.last
-        
+            
         //httpManager.callKeyboardCharEndPoint(String(char!))
     }
-    
-    //    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-    //
-    //        print(textField.text!.characters.last)
-    //
-    //        return true
-    //    }
     
     @IBAction func searchButton(sender: AnyObject) {
         

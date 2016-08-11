@@ -12,8 +12,8 @@ import CocoaAsyncSocket
 
 class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
     // class definition goes here
-     var mySocket: GCDAsyncUdpSocket!
-     var responseDelegate:ResponseDelegate! //This should be implemented and referred to your ViewController
+    var mySocket: GCDAsyncUdpSocket!
+    var responseDelegate:ResponseDelegate! //This should be implemented and referred to your ViewController
     
     //    M-SEARCH * HTTP/1.1
     //    HOST: 239.255.255.250:1900
@@ -32,14 +32,14 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
         let broadcastAddress: String = "239.255.255.250"
         let broadcastPort:UInt16 = 1900
         var error : NSError?
-       
-    
+        
+        
         //DO something
         let mSearchString: NSData = "M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: \"ssdp:discover\"\r\nMX: 3\r\nST: roku:ecp\r\nUSER-AGENT: iOS UPnP/1.1 TestApp/1.0\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!
         
         mySocket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue());
         
-       
+        
         mySocket.sendData(mSearchString, toHost: broadcastAddress, port: broadcastPort, withTimeout: 3, tag: 0)
         
         
@@ -71,7 +71,7 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
     
     func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
         
-       
+        
         var host: NSString?
         var port1: UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &port1, fromAddress: address)
@@ -105,16 +105,16 @@ class SocketConnection : NSObject, GCDAsyncUdpSocketDelegate {
             return []
         }
     }
-
+    
     
     func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
         print("didConnectToHost")
     }
-   
+    
     
     func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
         print("socketDidDisconnect")
     }
-
+    
     
 }

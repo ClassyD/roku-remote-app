@@ -67,28 +67,29 @@ public class HttpManager
     public func sendRequest(operation: String) {
         switch operation {
         case "UP":
-            try! callEndPoint(getKeyUpEndPoint, requesType: "POST")
+            callEndPoint(getKeyUpEndPoint, requesType: "POST")
         case "DOWN":
-            try! callEndPoint(getKeyDownEndPoint, requesType: "POST")
+            callEndPoint(getKeyDownEndPoint, requesType: "POST")
         case "LEFT":
-            try! callEndPoint(getKeyLeftEndPoint, requesType: "POST")
+            callEndPoint(getKeyLeftEndPoint, requesType: "POST")
         case "RIGHT":
-            try! callEndPoint(getKeyRightEndPoint, requesType: "POST")
+            callEndPoint(getKeyRightEndPoint, requesType: "POST")
         case "OK":
-            try! callEndPoint(getKeyOkEndPoint, requesType: "POST")
+            callEndPoint(getKeyOkEndPoint, requesType: "POST")
         case "BACK":
-            try! callEndPoint(getKeyBackEndPoint, requesType: "POST")
+            callEndPoint(getKeyBackEndPoint, requesType: "POST")
         case "BACKSPACE":
-            try! callEndPoint(getKeyBackspaceEndPoint, requesType: "POST")
+            callEndPoint(getKeyBackspaceEndPoint, requesType: "POST")
         default:
             break
         }
     }
     
-    internal func callEndPoint(endPoint: String, requesType: String) throws
+    internal func callEndPoint(endPoint: String, requesType: String)
     {
         
         var url = baseURL + endPoint
+        print(url)
         let request = NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
@@ -103,12 +104,13 @@ public class HttpManager
     }
     
     
-    public func callKeyboardCharEndPoint(char: String?)
+    public func callKeyboardCharEndPoint(char: String?
+        )
     {
         
         var url = baseURL + "keypress/Lit_" + (char)!
         print(url)
-        let request = NSMutableURLRequest(URL: NSURL(string:url)!)
+        let request = try! NSMutableURLRequest(URL: NSURL(string:url)!)
         let session = NSURLSession.sharedSession()
         
         request.HTTPMethod = "POST"
