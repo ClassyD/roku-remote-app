@@ -95,9 +95,9 @@ public class HttpManager
         
         request.HTTPMethod = requesType
         let _: NSError?
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
+        let task = session.dataTaskWithRequest(request, completionHandler: { data, response, err -> Void in
             print("Response: \(response)")
-            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            //let strData = NSString(data: data!, encoding: NSUTF8StringEncoding) 
         })
         task.resume()
         
@@ -117,7 +117,7 @@ public class HttpManager
         let _: NSError?
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, err -> Void in
             print("Response: \(response)")
-            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            //let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
         })
         task.resume()
         

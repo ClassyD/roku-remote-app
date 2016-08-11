@@ -69,7 +69,7 @@ class ViewController: UIViewController, UITextFieldDelegate, GCDAsyncUdpSocketDe
                     httpManager.callKeyboardCharEndPoint(charStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()))
                 } else{
                     print(string)
-                    httpManager.callKeyboardCharEndPoint(charStr)
+                    httpManager.callKeyboardCharEndPoint(charStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()))
                 }
                 return true
             } catch {
